@@ -57,7 +57,7 @@ def make_req(the_req):
                 )
             return v
         except Exception as e:
-            return f'ZAP-HOSTER:> {e}'
+            return 'ZAP-HOSTER:> {e}'.format(e)
     finally:
         pass
 
