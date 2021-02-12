@@ -2,7 +2,7 @@
 Fix host header error in zaproxy
 
 
-add this script to httpsender tab and run app.py
+add ZAP/zap-hoster.py script to httpsender tab and run app.py
 
 ```
 $ sudo pip3 install flask requests
