@@ -39,12 +39,9 @@ def make_req(the_req):
             del header['ZAP-HOST']
         if 'ZAP-REDIRECT' in header:
             the_req['redirect'] = True
-#            print(the_req)
             del header['ZAP-REDIRECT']
         else:
             the_req['redirect'] = False
-            #print(header)
-#        print(header)
         r = requests.Request(the_req['method'],the_req['url'],data=the_req['data'],headers=header)
         se = requests.Session()
         req = r.prepare()
@@ -57,14 +54,26 @@ def make_req(the_req):
                 )
             return v
         except Exception as e:
-            return 'ZAP-HOSTER:> {e}'.format(e)
+            return f'''HTTP/1.1 500 ERROR
+Server: ZAP-HOSTER-SERVER
+Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT
+Content-Length: 88
+Content-Type: text/plain
+Connection: Closed
+
+
+
+ZAP-HOSTER-ERROR : {e}
+        '''
     finally:
         pass
 
 
 #proxies={'http':'http://localhost:8080','https':'https://localhost:8080'},
+nn = {'headers':'','content':''}
 @app.route('/',methods=['POST'])
 def index():
+    global ar,nn
     r = request.form
     ar = ''
     req = r['the_req']
@@ -75,12 +84,20 @@ def index():
     m = make_req(req)
     if 'content' in dir(m):
         if 'ZAP-H' not in m.content.decode():
+            ar = 'HTTP/'+ str(m.raw.version)[0] + '.' + str(m.raw.version)[1] +' '+str(m.status_code) + m.__dict__['reason']+'\n'
+            nn['headers'] = ar
             for h,v in m.headers.items():
                 ar += f'{h}: {v}\n'
+                nn['headers'] += f'{h}: {v}\n'
+            ar += '\n\n'
             ar += m.content.decode()
+            nn['content'] = '\n\n'+m.content.decode()
             return ar
-    return 'gg'
+    return m
 
- 
+
+@app.route('/l')
+def last_req():
+     return jsonify(nn)
 
 app.run(host=host,port=port,debug=debug)
