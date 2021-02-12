@@ -40,24 +40,18 @@ host = 'localhost:3051'
 GET https://knassar702.github.io/ HTTP/1.1
 Host: knassar702.github.io
 User-agent: Firefox test
-
-
 For Change host header
 ---
 GET https://knassar702.github.io/
 Host: knassar702.github.io
 User-agent: Firefox test
 ZAP-HOST: localhost
-
 ZAP-HOST will be removed and the host header will be change to his value
-
 GET https://knassar702.github.io/ HTTP/1.1
 Host: localhost
 User-agent: Firefox test
-
 ----
 follow redirects with  ZAP-REDIRECT header
-
 GET https://knassar702.github.io/
 Host: knassar702.github.io
 User-agent: Firefox test
@@ -81,12 +75,14 @@ def sendingRequest(msg, initiator, helper):
     cmd = "curl {} -d the_req='{}'".format(host,r)
     print('Execute :> $  '+cmd)
     f = os.popen(cmd).read()
-    print('--------------\nOUTPUT:\n')
-    print(f) 
+   # print('--------------\nOUTPUT:\n')
+   # print(f) 
 
 
 
 def responseReceived(msg, initiator, helper):
     # Debugging can be done using print like this
-    print('responseReceived called for url=' +
-          msg.getRequestHeader().getURI().toString())
+    o = os.popen('curl {}/l'.format(host)).read()
+    j = json.loads(o)
+    msg.setResponseHeader(j['headers'])
+    msg.setResponseBody(j['content'])
