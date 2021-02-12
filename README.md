@@ -2,7 +2,12 @@
 Fix host header error in zaproxy
 
 
-add this script to httpsender tab :D
+add this script to httpsender tab and run app.py
+
+```
+$ sudo pip3 install flask requests
+$ python3 app.py
+```
 
 ```
 GET https://knassar702.github.io/ HTTP/1.1
