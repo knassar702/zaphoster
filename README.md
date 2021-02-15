@@ -1,5 +1,5 @@
 # zaphoster
-Fix host header error in zaproxy
+### [Fix host header forcing in zaproxy](https://github.com/zaproxy/zaproxy/issues/1318)
 
 
 add ZAP/zap-hoster.py script to httpsender tab and run app.py
