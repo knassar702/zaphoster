@@ -71,9 +71,16 @@ ZAP-HOSTER-ERROR : {e}
 
 #proxies={'http':'http://localhost:8080','https':'https://localhost:8080'},
 nn = {'headers':'','content':''}
-@app.route('/',methods=['POST'])
+@app.route('/',methods=['POST','GET'])
 def index():
     global ar,nn
+    if request.method == 'GET':
+        return '''
+<img src=https://kasunkodagoda.gallerycdn.vsassets.io/extensions/kasunkodagoda/owasp-zap-scan/2.0.10/1567001746825/Microsoft.VisualStudio.Services.Icons.Default align=center>
+<h1> <a href="https://github.com/knassar702/zaphoster">ZAP-HOSTER</a> - Fix Forcing Host header value</h1>
+<h4>by: Khaled Nassar <a href="https://github.com/knassar702">@knassar702</h4></a>
+
+    '''
     r = request.form
     ar = ''
     req = r['the_req']
